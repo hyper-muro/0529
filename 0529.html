@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <script>
+      /*---------------------------------------------------------------
+          for-in文でオブジェクトのプロパティを取得する
+      ---------------------------------------------------------------*/
+
+      let nihon = {
+        japanese: '日本',
+        english: 'Japan',
+        french: 'Japon'
+      }
+
+      for(let language in nihon) {
+        console.log(language); //オブジェクトのプロパティがひとつずつ表示される
+      }
+
+      for(let language in nihon) {
+        console.log(nihon[language]); //オブジェクトの値がひとつずつ表示される
+      }
+
+      for(let language in nihon) {
+        console.log(language);
+        if(language === 'english') {
+          break; //条件に合致したら処理を終了する
+        }
+      }
+
+      /*---------------------------------------------------------------
+          for-in文は実行環境などにより「必ず要素の順番通り」に処理されない
+      ---------------------------------------------------------------*/
+
+      //継承問題
+      console.log(nihon);
+
+      /* 実行結果
+      english: "Japan"
+      french: "Japon"
+      japanese: "日本"
+      __proto__: Object  ←これ  */
+
+      //Objectというオブジェクトの機能を継承しているという意味
+      //for-in文は継承元オブジェクトの列挙可能なプロパティも取得してしまうので注意が必要
+
+      Object.prototype.newMethod = function(){};
+
+      for(let language in nihon) {
+        console.log(language);
+      }
+
+      /* 実行結果
+      japanese
+      english
+      french
+      newMethod　←親のObjectに追加した関数
+      */
+
+      //HTML要素を取得してfor-in文を使った場合などは注意
+
+      /*---------------------------------------------------------------
+          継承を気にせずにプロパティを表示する方法
+      ---------------------------------------------------------------*/
+
+      //hasOwnProperty()を使う
+      for(let language in nihon) {
+        if(nihon.hasOwnProperty(language)) {
+          console.log(language);
+        }
+      }
+
+      //Object.keys()でキーを取得した配列をforEach文で表示する
+      Object.keys(nihon).forEach((language) => {
+        console.log(nihon[language]);
+      });
+    </script>
+</body>
+</html>
